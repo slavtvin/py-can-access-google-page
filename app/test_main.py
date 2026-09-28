@@ -2,39 +2,36 @@ from unittest.mock import patch, MagicMock
 from app.main import can_access_google_page
 
 
-@patch("app.main.valid_google_url")
 @patch("app.main.has_internet_connection")
-def test_accessible(mock_internet: MagicMock, mock_valid: MagicMock) -> None:
+@patch("app.main.valid_google_url")
+def test_valid_url_and_connection_exists_returns_accessible(mock_valid: MagicMock, mock_internet: MagicMock) -> None:
     mock_valid.return_value = True
     mock_internet.return_value = True
     result = can_access_google_page("https://www.google.com")
     assert result == "Accessible"
 
 
-@patch("app.main.valid_google_url")
 @patch("app.main.has_internet_connection")
-def test_not_accessible_valid(mock_internet: MagicMock,
-                              mock_valid: MagicMock) -> None:
+@patch("app.main.valid_google_url")
+def test_invalid_url_and_connection_exists_returns_not_accessible(mock_valid: MagicMock, mock_internet: MagicMock) -> None:
     mock_valid.return_value = False
     mock_internet.return_value = True
     result = can_access_google_page("https://www.google.com")
     assert result == "Not accessible"
 
 
-@patch("app.main.valid_google_url")
 @patch("app.main.has_internet_connection")
-def test_not_accessible_internet(mock_internet: MagicMock,
-                                 mock_valid: MagicMock) -> None:
+@patch("app.main.valid_google_url")
+def test_valid_url_and_no_connection_returns_not_accessible(mock_valid: MagicMock, mock_internet: MagicMock) -> None:
     mock_valid.return_value = True
     mock_internet.return_value = False
     result = can_access_google_page("https://www.google.com")
     assert result == "Not accessible"
 
 
-@patch("app.main.valid_google_url")
 @patch("app.main.has_internet_connection")
-def test_not_accessible_valid_and_internet(mock_internet: MagicMock,
-                                           mock_valid: MagicMock) -> None:
+@patch("app.main.valid_google_url")
+def test_invalid_url_and_no_connection_returns_not_accessible(mock_valid: MagicMock, mock_internet: MagicMock) -> None:
     mock_valid.return_value = False
     mock_internet.return_value = False
     result = can_access_google_page("https://www.google.com")
